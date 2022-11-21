@@ -28,7 +28,7 @@ policies, either expressed or implied, of the FreeBSD Project.
 */
 
 // Sever VCCMD=VREG jumper on Motor Driver and Power Distribution Board and connect VCCMD to 3.3V.
-//   This makes P3.7 and P3.6 low power disables for motor drivers.  0 to sleep/stop.
+//   This makes P3.7 and P3.6 low power disables for motor drivers.  0 to SysTick_Wait10ms/stop.
 // Sever nSLPL=nSLPR jumper.
 //   This separates P3.7 and P3.6 allowing for independent control
 // Left motor direction connected to P1.7 (J2.14)
@@ -60,14 +60,14 @@ void Motor_InitSimple(void){
 }
 
 void Motor_StopSimple(uint32_t time_ms){
-// Stops both motors, puts driver to sleep
+// Stops both motors, puts driver to SysTick_Wait10ms
 // Returns right away
   P1->OUT &= ~0xC0;   // off
   P2->OUT &= ~0xC0;   // off
   SysTick_Wait10ms(time_ms); // wait for multiple of 10ms from SysTick
 }
 
-void Motor_ForwardSimple(uint16_t duty, uint32_t time_ms){
+void Motor_BackwardSimple(uint16_t duty, uint32_t time_ms){
 
     uint32_t i; // this i is used for the 'for loop' in section mtr_pwm_loop
     uint16_t L;
@@ -99,24 +99,25 @@ void Motor_ForwardSimple(uint16_t duty, uint32_t time_ms){
 	*/
 	
 	// use for loop here from 0 to time_ms, count every 1 step
-    For(i=0; i<=time_ms,i++){
+    for( i=0; i<=time_ms;i++ )
+    {
 
 	  // (1) turn on the PWM of both motors using OUT
 	  P2 ->OUT |= 0xC0;
 	  // (2) wait for 1us for the duty
-      sleep(0.001);
+      SysTick_Wait1us(10*duty);
       // turn off the PWM of both motors
 	  P2->OUT &= ~0xC0; 
 	  
       // (3) wait for 1us for another cycle from the duty
-	  sleep(0.001);
+	  SysTick_Wait1us(10*L);
 	  // (4) wait for 1ms using SysTick_Wait
-	  SysTick_Wait10ms(0.1);
+	  SysTick_Wait1us(1000);
     }
 	  
 }
 
-void Motor_BackwardSimple(uint16_t duty, uint32_t time_ms){
+void Motor_ForwardSimple(uint16_t duty, uint32_t time_ms){
 
     uint32_t i; // this i is used for the 'for loop' in section mtr_pwm_loop
     uint16_t L;
@@ -151,24 +152,24 @@ void Motor_BackwardSimple(uint16_t duty, uint32_t time_ms){
 	*/
 	
 	// use for loop here from 0 to time_ms, count every 1 step
-    For(i=0,i<time_ms,i++){
+    for(i=0;i<time_ms;i++){
 
 
 	  // (1) turn on the PWM of both motors using OUT
 	  P2 ->OUT|=0xC0;
 	  // (2) wait for 1us for the duty
-	  sleep(0.001);
+      SysTick_Wait1us(10*duty);
       // turn of the PWM of both motors
 	  P2->OUT &= ~0xC0; 
 	  
       // (3) wait for 1us for another cycle from the duty
-	  sleep(0.001);
-	  // (4) wait for 1ms using SysTick_Wait
-	  SysTick_Wait10ms(0.1);
+      SysTick_Wait1us(10*L);
+      // (4) wait for 1ms using SysTick_Wait
+      SysTick_Wait1us(1000);
     }
 }
 
-void Motor_LeftSimple(uint16_t duty, uint32_t time_ms){
+void Motor_RightSimple(uint16_t duty, uint32_t time_ms){
 
     uint32_t i; // this i is used for the 'for loop' in section mtr_pwm_loop
     uint16_t L;
@@ -191,7 +192,7 @@ void Motor_LeftSimple(uint16_t duty, uint32_t time_ms){
 	// (2) Set the output (OUT) of the port to run the motor
 	// 		For example: P?->OUT |= 0x??;
 	// Where P? is the port number and 0x?? is the pins that will be used
-    P1->OUT |= 0xC0;
+    P1->OUT |= 0x40;
 
 	/*
 	  Section mtr_pwm_loop 
@@ -202,23 +203,23 @@ void Motor_LeftSimple(uint16_t duty, uint32_t time_ms){
 	*/
 	
 	// use for loop here from 0 to time_ms, count every 1 step
-    For(i=0,i<time_ms,i++){
+    for(i=0;i<time_ms;i++){
 
 
 	  // (1) turn on the PWM of both motors using OUT
-	  P2 ->OUT |= 0xC0;
+	  P2 ->OUT |= 0x40;
 	  // (2) wait for 1us for the duty
-	  sleep(0.001);
+      SysTick_Wait1us(10*duty);
       // turn of the PWM of both motors
-	  P2->OUT &= ~0xC0; 
+	  P2->OUT &= ~0x40;
 	  
       // (3) wait for 1us for another cycle from the duty
-	  sleep(0.001);
-	  // (4) wait for 1ms using SysTick_Wait
-	  SysTick_Wait10ms(0.1);
+      SysTick_Wait1us(10*L);
+      // (4) wait for 1ms using SysTick_Wait
+      SysTick_Wait1us(1000);
     }
 }
-void Motor_RightSimple(uint16_t duty, uint32_t time_ms){
+void Motor_LeftSimple(uint16_t duty, uint32_t time_ms){
 
     uint32_t i; // this i is used for the 'for loop' in section mtr_pwm_loop
     uint16_t L;
@@ -241,7 +242,7 @@ void Motor_RightSimple(uint16_t duty, uint32_t time_ms){
     // (2) Set the output (OUT) of the port to run the motor
     //      For example: P?->OUT |= 0x??;
     // Where P? is the port number and 0x?? is the pins that will be used
-    P1->OUT |= 0xC0;
+    P1->OUT |= 0x80;
 
     /*
       Section mtr_pwm_loop
@@ -252,19 +253,19 @@ void Motor_RightSimple(uint16_t duty, uint32_t time_ms){
     */
 
     // use for loop here from 0 to time_ms, count every 1 step
-    For(i=0,i<time_ms,i++){
+    for(i=0;i<time_ms;i++){
 
 
       // (1) turn on the PWM of both motors using OUT
-      P2 ->OUT |= 0xC0;
+      P2 ->OUT |= 0x80;
       // (2) wait for 1us for the duty
-      sleep(0.001);
+      SysTick_Wait1us(10*duty);
       // turn of the PWM of both motors
-      P2->OUT &= ~0xC0;
+      P2->OUT &= ~0x80;
 
       // (3) wait for 1us for another cycle from the duty
-      sleep(0.001);
+      SysTick_Wait1us(10*L);
       // (4) wait for 1ms using SysTick_Wait
-      SysTick_Wait10ms(0.1);
+      SysTick_Wait1us(1000);
     }
 }
