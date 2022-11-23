@@ -92,24 +92,24 @@ void BumpEdgeTrigger_Init(void){
     // Interrupt Vector of Port4
       status = P4->IV;      // 2*(n+1) where n is highest priority
 
-	  // The case used are the interrupt vector of P4->IV
-	  // For example, the bump switch 3 is connected to P4.3
-	  // (in other words, Port 4 at pin 3),
-	  // thus the status of case would be:
-	  // status = 2*(pin number + 1)
-	  //        = 2*(pin_3 + 1)
-	  //        = 2*(3 + 1)
-	  //        = 2*(4)
-	  //        = 8
-	  // in hex = 0x08
-	  // (*NOTE: in this code only bump switch 3 has been calculated,
-	  //         please figure out the other bump switches)
+      // The case used are the interrupt vector of P4->IV
+      // For example, the bump switch 3 is connected to P4.3
+      // (in other words, Port 4 at pin 3),
+      // thus the status of case would be:
+      // status = 2*(pin number + 1)
+      //        = 2*(pin_3 + 1)
+      //        = 2*(3 + 1)
+      //        = 2*(4)
+      //        = 8
+      // in hex = 0x08
+      // (*NOTE: in this code only bump switch 3 has been calculated,
+      //         please figure out the other bump switches)
      switch(status){
 
         case 0x02: // Bump switch 1
             if (pattern==2){
             Port2_Output(GREEN);    // Change the coloured LED into green (backward)
-			
+
             Motor_BackwardSimple(500, 200); // Move backward at 500 duty for 200ms
             
             Port2_Output(0);    // turn off the coloured LED
@@ -133,7 +133,7 @@ void BumpEdgeTrigger_Init(void){
         case 0x06: // Bump switch 2
             if (pattern==2){
             Port2_Output(GREEN); // Change the coloured LED into green (backward)
-			
+
             Motor_BackwardSimple(500, 200); // Move backward at 500 duty for 200ms
 
             Port2_Output(0);   // turn off the coloured LED
@@ -157,7 +157,7 @@ void BumpEdgeTrigger_Init(void){
         case 0x08: // Bump switch 3
             if (pattern==2){
             Port2_Output(GREEN);// Change the coloured LED into green (backward)
-			
+
             Motor_BackwardSimple(500, 200); // Move backward at 500 duty for 200ms
             
             Port2_Output(0);// turn off the coloured LED
@@ -436,9 +436,10 @@ void checkbumpswitch(uint8_t status)
 
         break;
       case 0xED: // neither switch pressed
+          Motor_ForwardSimple(500, 1);
 
-        break;
     }
+    P4->IFG &= ~0xED; // clear flag
 }
 
 void Port1_Init(void){
@@ -493,7 +494,7 @@ int main(void){
 
   REDLED = 0;               // Turn off the red LED
   BumpEdgeTrigger_Init();   // Initialise bump switches using edge interrupt
-
+  DisableInterrupts();
   Port2_Init();             // Initialise P2.2-P2.0 built-in LEDs
   Port2_Output(WHITE);      // White is the colour to represent moving forward
   Motor_InitSimple();       // Initialise DC Motor
@@ -505,49 +506,36 @@ int main(void){
   while(1){
       if (SW1IN){
           pattern=1;
-          break;
       }
-      if (SW2IN){
+      else if (SW2IN){
           pattern=2;
-          break;
       }
-	// This section is used for Example 1 (seciton 5.8.1)
-    //__no_operation();		// the code will run without operation
-
-    }
-
-  if (pattern==1){
-          Motor_ForwardSimple(500, 1000);
-          if (status == 0x6D || status == 0xAD || status == 0xCD || status == 0xE5 || status == 0xE9 || status == 0xEC) {
-            checkbumpswitch(status);
-          }
-      }
-  else if(pattern==2){
-          Motor_ForwardSimple(500, 1);//EnableInterrupts();
-         while(1){
-          
+    // This section is used for Example 1 (seciton 5.8.1)
+    //__no_operation();     // the code will run without operation
           status = Bump_Read_Input();
-          if (status == 0x6D || status == 0xAD || status == 0xCD || status == 0xE5 || status == 0xE9 || status == 0xEC) {
+          if (status == 0x6D || status == 0xAD || status == 0xCD || status == 0xE5 || status == 0xE9 || status == 0xEC || status ==0xED) {
             checkbumpswitch(status);
-           }
           }
-        }
+
+}
+
+
 
     // This section is used for Example 2 (section 5.8.2)
-	/*
+    /*
         status = Bump_Read_Input();
         if (status == 0x6D || status == 0xAD || status == 0xCD || status == 0xE5 || status == 0xE9 || status == 0xEC) {
             checkbumpswitch(status);
         }
-	*/
-	
-	// This section is used for Example 3 (section 5.8.3)
-		// Move forward with 500 duty but can run with any number for time_ms,
-		// in this case, the robot will move infinitely because of the while loop,
-		// (although the time_ms used is 1)
-	/*
-		Motor_ForwardSimple(500, 1);
-	*/
+    */
+
+    // This section is used for Example 3 (section 5.8.3)
+        // Move forward with 500 duty but can run with any number for time_ms,
+        // in this case, the robot will move infinitely because of the while loop,
+        // (although the time_ms used is 1)
+    /*
+        Motor_ForwardSimple(500, 1);
+    */
 
 
 }
