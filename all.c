@@ -57,7 +57,7 @@ policies, either expressed or implied, of the FreeBSD Project.
 #define SKYBLUE   0x06
 #define WHITE     0x07
 int pattern;
-
+int method;
 // Initialize Bump sensors using interrupt
 // Make six from Port 4 input pins
 // Activate interface pull-up
@@ -504,7 +504,15 @@ int main(void){
 //  EnableInterrupts();       // Clear the I bit
   
 while(1){  
-  if (SW1IN){
+        if (SW1IN){
+           method=1;
+        }
+        else if (SW2IN){
+           method=2;
+      }
+   
+   
+  if (method==1){
     ////polling
      while(1){
         if (SW1IN){
@@ -523,7 +531,7 @@ while(1){
   }
 }
 //// interrupt  
-  else if (SW2IN){  
+  else if (method==2){  
     while(1){
         if (SW1IN){
            pattern=1;
@@ -536,7 +544,7 @@ while(1){
            Port2_Output(WHITE);      // White is the colour to represent moving forward
         Motor_ForwardSimple(500, 1);
           }
-     if(pattern==2){
+       else if(pattern==2){
          EnableInterrupts();
          Port2_Output(WHITE);      // White is the colour to represent moving forward
         Motor_ForwardSimple(500, 1);      
