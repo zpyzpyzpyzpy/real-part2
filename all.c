@@ -525,6 +525,12 @@ while(1){
 //// interrupt  
   else if (SW2IN){  
     while(1){
+        if (SW1IN){
+           pattern=1;
+        }
+        else if (SW2IN){
+           pattern=2;
+      }   
        if (pattern==1){
         EnableInterrupts();
            Port2_Output(WHITE);      // White is the colour to represent moving forward
