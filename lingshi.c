@@ -76,7 +76,7 @@ void BumpEdgeTrigger_Init(void){
     // enable interrupt 38 in NVIC on port4
     NVIC->ISER[1] = 0x00000040;
 }
-/*
+
 // Uses P4IV IRQ handler to solve critical section/race
 void PORT4_IRQHandler(void){
 
@@ -125,7 +125,7 @@ void PORT4_IRQHandler(void){
             Motor_StopSimple(100);  // Stop for 1000ms
             break;
       }
-      else if (pattern==1){
+       if (pattern==1){
           Motor_StopSimple(1000);
       }
 
@@ -149,7 +149,7 @@ void PORT4_IRQHandler(void){
             Motor_StopSimple(100);  // Stop for 1000ms
             break;
       }
-      else if (pattern==1){
+       if (pattern==1){
           Motor_StopSimple(1000);
       }
 
@@ -173,7 +173,7 @@ void PORT4_IRQHandler(void){
             Motor_StopSimple(100);// Stop for 1000ms
             break;
       }
-      else if (pattern==1){
+       if (pattern==1){
           Motor_StopSimple(1000);
       }
 
@@ -197,7 +197,7 @@ void PORT4_IRQHandler(void){
             Motor_StopSimple(100);// Stop for 1000ms
             break;
       }
-      else if (pattern==1){
+       if (pattern==1){
           Motor_StopSimple(1000);
       }
 
@@ -221,7 +221,7 @@ void PORT4_IRQHandler(void){
             Motor_StopSimple(100);// Stop for 1000ms
             break;
       }
-      else if (pattern==1){
+       if (pattern==1){
           Motor_StopSimple(1000);
       }
 
@@ -245,7 +245,7 @@ void PORT4_IRQHandler(void){
              Motor_StopSimple(100);// Stop for 1000ms
              break;
       }
-      else if (pattern==1){
+       if (pattern==1){
           Motor_StopSimple(1000);
       }
 
@@ -258,7 +258,7 @@ void PORT4_IRQHandler(void){
 
       P4->IFG &= ~0xED; // clear flag
 }
-*/
+
 // Read current state of 6 switches
 // Returns a 6-bit positive logic result (0 to 63)
 // bit 5 Bump5
@@ -303,7 +303,7 @@ void checkbumpswitch(uint8_t status)
             Motor_StopSimple(100);  // Stop for 1000ms
             break;
     }
-    else if (pattern==1){
+     if (pattern==1){
         Motor_StopSimple(1000);
     }
 
@@ -328,7 +328,7 @@ void checkbumpswitch(uint8_t status)
               Motor_StopSimple(100);  // Stop for 1000ms
               break;
     }
-    else if (pattern==1){
+     if (pattern==1){
         Motor_StopSimple(1000);
     }
 
@@ -353,7 +353,7 @@ void checkbumpswitch(uint8_t status)
               Motor_StopSimple(100);// Stop for 1000ms
               break;
     }
-    else if (pattern==1){
+     if (pattern==1){
         Motor_StopSimple(1000);
     }
 
@@ -378,7 +378,7 @@ void checkbumpswitch(uint8_t status)
               Motor_StopSimple(100);// Stop for 1000ms
               break;
     }
-    else if (pattern==1){
+     if (pattern==1){
         Motor_StopSimple(1000);
     }
 
@@ -403,7 +403,7 @@ void checkbumpswitch(uint8_t status)
               Motor_StopSimple(100);// Stop for 1000ms
               break;
     }
-    else if (pattern==1){
+     if (pattern==1){
         Motor_StopSimple(1000);
     }
 
@@ -430,13 +430,14 @@ void checkbumpswitch(uint8_t status)
              Motor_StopSimple(100);// Stop for 1000ms
              break;
           }
-          else if (pattern==1){
+           if (pattern==1){
               Motor_StopSimple(1000);
           }
 
         break;
       case 0xED: // neither switch pressed
-        break;
+          Port2_Output(WHITE);      // White is the colour to represent moving forward
+          Motor_ForwardSimple(500, 1);
 
     }
     P4->IFG &= ~0xED; // clear flag
@@ -487,7 +488,6 @@ void Switch_Init(void){
   Switch_Init();            // Initialise switches
   SysTick_Init();           // Initialise SysTick timer
   Port1_Init();             // Initialise P1.1 and P1.4 built-in buttons
-
   while(!SW2IN && !SW1IN){            // Wait for SW2 switch
       SysTick_Wait10ms(10); // Wait here for every 100ms
       REDLED = !REDLED;     // The red LED is blinking waiting for command
@@ -504,56 +504,53 @@ void Switch_Init(void){
 //  EnableInterrupts();       // Clear the I bit
 
 while(1){
-    __no_operation();
-/*
         if (SW1IN){
-            method=1;
+           method=1;
+           break;
         }
-        else if (SW2IN){
+        if (SW2IN){
            method=2;
-      }*/
-method=1;
+           break;
+        }
+
 
   if (method==1){
-      DisableInterrupts();
     ////polling
-
      while(1){
         if (SW1IN){
            pattern=1;
         }
-        else if (SW2IN){
+         if (SW2IN){
            pattern=2;
       }
-
-
     // This section is used for Example 1 (seciton 5.8.1)
-
+          DisableInterrupts();
           __no_operation();
-          Port2_Output(WHITE);      // White is the colour to represent moving forward
-          Motor_ForwardSimple(500, 1);
-          BumpEdgeTrigger_Init();   // Initialise bump switches using edge interrupt
           status = Bump_Read_Input();
-          if (status == 0x6D || status == 0xAD || status == 0xCD || status == 0xE5 || status == 0xE9 || status == 0xEC ) {
+          if (status == 0x6D || status == 0xAD || status == 0xCD || status == 0xE5 || status == 0xE9 || status == 0xEC || status ==0xED) {
             checkbumpswitch(status);
           }
   }
 }
 //// interrupt
-  else if (method==2){
+   if (method==2){
     while(1){
         if (SW1IN){
            pattern=1;
         }
-        else if (SW2IN){
+         if (SW2IN){
            pattern=2;
       }
-
+       if (pattern==1){
         EnableInterrupts();
            Port2_Output(WHITE);      // White is the colour to represent moving forward
-//        Motor_ForwardSimple(500, 1);
-
-
+        Motor_ForwardSimple(500, 1);
+          }
+        if(pattern==2){
+         EnableInterrupts();
+         Port2_Output(WHITE);      // White is the colour to represent moving forward
+        Motor_ForwardSimple(500, 1);
+          }
     }
   }
 
