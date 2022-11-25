@@ -518,6 +518,7 @@ int main(void){
 
   // Run forever
   while(1){
+      __no_operation();
       if (SW1IN){
           pattern=1;
       }
