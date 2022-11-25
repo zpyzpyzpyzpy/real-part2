@@ -304,7 +304,9 @@ void checkbumpswitch(uint8_t status)
             break;
     }
     else if (pattern==1){
-        Motor_StopSimple(1000);
+        while(1){
+                Motor_StopSimple(1000);
+               }
     }
 
         break;
@@ -329,7 +331,9 @@ void checkbumpswitch(uint8_t status)
               break;
     }
     else if (pattern==1){
-        Motor_StopSimple(1000);
+        while(1){
+                Motor_StopSimple(1000);
+               }
     }
 
         break;
@@ -354,7 +358,9 @@ void checkbumpswitch(uint8_t status)
               break;
     }
     else if (pattern==1){
-        Motor_StopSimple(1000);
+        while(1){
+                Motor_StopSimple(1000);
+               }
     }
 
         break;
@@ -379,7 +385,9 @@ void checkbumpswitch(uint8_t status)
               break;
     }
     else if (pattern==1){
-        Motor_StopSimple(1000);
+        while(1){
+                Motor_StopSimple(1000);
+               }
     }
 
         break;
@@ -404,7 +412,11 @@ void checkbumpswitch(uint8_t status)
               break;
     }
     else if (pattern==1){
-        Motor_StopSimple(1000);
+       while(1){
+           while(1){
+                   Motor_StopSimple(1000);
+                  }
+       }
     }
 
         break;
@@ -431,7 +443,9 @@ void checkbumpswitch(uint8_t status)
              break;
           }
           else if (pattern==1){
-              Motor_StopSimple(1000);
+              while(1){
+                      Motor_StopSimple(1000);
+                     }
           }
 
         break;
