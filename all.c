@@ -481,7 +481,7 @@ void Switch_Init(void){
 #define SW2IN ((*((volatile uint8_t *)(0x42098010)))^1) // input: switch SW2
 #define REDLED (*((volatile uint8_t *)(0x42098040)))    // output: red LED
 
-int main(void){
+ int main(void){
     uint8_t status;
 
   Clock_Init48MHz();        // Initialise clock with 48MHz frequency
@@ -495,23 +495,23 @@ int main(void){
 
   REDLED = 0;               // Turn off the red LED
   BumpEdgeTrigger_Init();   // Initialise bump switches using edge interrupt
- 
+
   Port2_Init();             // Initialise P2.2-P2.0 built-in LEDs
 
   Motor_InitSimple();       // Initialise DC Motor
   Motor_StopSimple(100);    // Stop the motor on initial state
 
 //  EnableInterrupts();       // Clear the I bit
-  
-while(1){  
+
+while(1){
         if (SW1IN){
            method=1;
         }
         else if (SW2IN){
            method=2;
       }
-   
-   
+
+
   if (method==1){
     ////polling
      while(1){
@@ -522,23 +522,23 @@ while(1){
            pattern=2;
       }
     // This section is used for Example 1 (seciton 5.8.1)
-    //__no_operation();     // the code will run without operation
           DisableInterrupts();
+          __no_operation();
           status = Bump_Read_Input();
           if (status == 0x6D || status == 0xAD || status == 0xCD || status == 0xE5 || status == 0xE9 || status == 0xEC || status ==0xED) {
             checkbumpswitch(status);
           }
   }
 }
-//// interrupt  
-  else if (method==2){  
+//// interrupt
+  else if (method==2){
     while(1){
         if (SW1IN){
            pattern=1;
         }
         else if (SW2IN){
            pattern=2;
-      }   
+      }
        if (pattern==1){
         EnableInterrupts();
            Port2_Output(WHITE);      // White is the colour to represent moving forward
@@ -547,7 +547,7 @@ while(1){
        else if(pattern==2){
          EnableInterrupts();
          Port2_Output(WHITE);      // White is the colour to represent moving forward
-        Motor_ForwardSimple(500, 1);      
+        Motor_ForwardSimple(500, 1);
           }
     }
   }
