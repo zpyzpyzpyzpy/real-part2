@@ -526,13 +526,13 @@ void Switch_Init(void){
 
 while(1){
         if (SW1IN){
-           method=1;
            Switch_Init();            // Initialise switches
+           method=1;
            break;
         }
         else if (SW2IN){
+           Switch_Init();            // Initialise switches                  
            method=2;
-           Switch_Init();            // Initialise switches
            break;
       }
 
