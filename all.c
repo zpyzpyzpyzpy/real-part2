@@ -535,18 +535,18 @@ while(1){
            method=2;
            break;
       }
+}
 
-
+    
+while(method==1||method==2){    
   if (method==1){
     ////polling
      while(1){
         if (SW1IN){
            pattern=1;
-           break;
         }
         else if (SW2IN){
            pattern=2;
-           break;
       }
     // This section is used for Example 1 (seciton 5.8.1)
           DisableInterrupts();
@@ -564,11 +564,9 @@ while(1){
     while(1){
         if (SW1IN){
            pattern=1;
-           break;
         }
         else if (SW2IN){
            pattern=2;
-           break;
         }
 
         EnableInterrupts();
