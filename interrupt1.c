@@ -506,12 +506,12 @@ int main(void){
 	// This section is used for Example 1 (seciton 5.8.1)
     __no_operation();		// the code will run without operation
     if (pattern==1){
+	EnableInterrupts();
         Motor_ForwardSimple(500, 1);
     }
      if(pattern==2){
          EnableInterrupts();
         Motor_ForwardSimple(500, 1);
-        status = Bump_Read_Input();
     }
        /* if (status == 0x6D || status == 0xAD || status == 0xCD || status == 0xE5 || status == 0xE9 || status == 0xEC) {
           checkbumpswitch(status);
