@@ -448,8 +448,7 @@ void checkbumpswitch(uint8_t status)
 
         break;
       case 0xED: // neither switch pressed
-          Port2_Output(WHITE);      // White is the colour to represent moving forward
-          Motor_ForwardSimple(500, 1);
+         break;
 
     }
     P4->IFG &= ~0xED; // clear flag
@@ -504,7 +503,7 @@ int main(void){
       SysTick_Wait10ms(10); // Wait here for every 100ms
       REDLED = !REDLED;     // The red LED is blinking waiting for command
   }
-DisableInterrupts();
+  DisableInterrupts();
   REDLED = 0;               // Turn off the red LED
   BumpEdgeTrigger_Init();   // Initialise bump switches using edge interrupt
   Port2_Init();             // Initialise P2.2-P2.0 built-in LEDs
@@ -534,8 +533,10 @@ DisableInterrupts();
       }
     // This section is used for Example 1 (seciton 5.8.1)
     //__no_operation();     // the code will run without operation
+          Port2_Output(WHITE);      // White is the colour to represent moving forward
+          Motor_ForwardSimple(500, 1);
           status = Bump_Read_Input();
-          if (status == 0x6D || status == 0xAD || status == 0xCD || status == 0xE5 || status == 0xE9 || status == 0xEC || status ==0xED) {
+          if (status == 0x6D || status == 0xAD || status == 0xCD || status == 0xE5 || status == 0xE9 || status == 0xEC ) {
             checkbumpswitch(status);
           }
 
