@@ -126,7 +126,9 @@ void PORT4_IRQHandler(void){
             break;
       }
       else if (pattern==1){
+	  while(1){
           Motor_StopSimple(1000);
+	  }
       }
 
           break;
@@ -150,7 +152,9 @@ void PORT4_IRQHandler(void){
             break;
       }
       else if (pattern==1){
+	  while(1){
           Motor_StopSimple(1000);
+	  }
       }
 
           break;
@@ -174,7 +178,9 @@ void PORT4_IRQHandler(void){
             break;
       }
       else if (pattern==1){
+	  while(1){
           Motor_StopSimple(1000);
+	  }
       }
 
           break;
@@ -198,7 +204,9 @@ void PORT4_IRQHandler(void){
             break;
       }
       else if (pattern==1){
+	  while(1){
           Motor_StopSimple(1000);
+	  }
       }
 
           break;
@@ -222,7 +230,9 @@ void PORT4_IRQHandler(void){
             break;
       }
       else if (pattern==1){
+	  while(1){
           Motor_StopSimple(1000);
+	  }
       }
 
           break;
@@ -246,7 +256,9 @@ void PORT4_IRQHandler(void){
              break;
       }
       else if (pattern==1){
+	  while(1){
           Motor_StopSimple(1000);
+	  }
       }
 
           break;
@@ -302,7 +314,9 @@ void checkbumpswitch(uint8_t status)
             Motor_StopSimple(100);  // Stop for 1000ms
     }
     else if (pattern==1){
-        Motor_StopSimple(1000);
+	  while(1){
+          Motor_StopSimple(1000);
+	  }
     }
 
         break;
@@ -327,7 +341,9 @@ void checkbumpswitch(uint8_t status)
 
     }
     else if (pattern==1){
-        Motor_StopSimple(1000);
+	  while(1){
+          Motor_StopSimple(1000);
+	  }
     }
 
         break;
@@ -351,7 +367,9 @@ void checkbumpswitch(uint8_t status)
               Motor_StopSimple(100);// Stop for 1000ms
     }
     else if (pattern==1){
-        Motor_StopSimple(1000);
+	  while(1){
+          Motor_StopSimple(1000);
+	  }
     }
 
         break;
@@ -375,7 +393,9 @@ void checkbumpswitch(uint8_t status)
               Motor_StopSimple(100);// Stop for 1000ms
     }
     else if (pattern==1){
-        Motor_StopSimple(1000);
+	  while(1){
+          Motor_StopSimple(1000);
+	  }
     }
 
         break;
@@ -399,7 +419,9 @@ void checkbumpswitch(uint8_t status)
               Motor_StopSimple(100);// Stop for 1000ms
     }
     else if (pattern==1){
-        Motor_StopSimple(1000);
+	  while(1){
+          Motor_StopSimple(1000);
+	  }
     }
 
         break;
@@ -425,7 +447,9 @@ void checkbumpswitch(uint8_t status)
              Motor_StopSimple(100);// Stop for 1000ms
           }
           else if (pattern==1){
+	     while(1){
               Motor_StopSimple(1000);
+	     }
           }
 
         break;
@@ -507,7 +531,12 @@ int main(void){
     __no_operation();		// the code will run without operation
     if (pattern==1){
 	EnableInterrupts();
-        Motor_ForwardSimple(500, 1);
+         Port2_Output(WHITE);      // White is the colour to represent moving forward
+         Motor_ForwardSimple(500, 200);
+         Port2_Output(0);// turn off the coloured LED
+         Motor_StopSimple(100);// Stop for 1000ms
+         Port2_Output(BLUE);// Change the coloured LED into yellow (turn right)
+         Motor_RightSimple(500, 200);// Make a left turn at 500 duty for 200ms
     }
      if(pattern==2){
          EnableInterrupts();
