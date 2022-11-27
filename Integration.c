@@ -198,12 +198,7 @@ void checkbumpswitch(uint8_t status)
             Motor_StopSimple(100);  // Stop for 1000ms
     }
     else if (polling==1){
-         Port2_Output(WHITE);      // White is the colour to represent moving forward
-         Motor_ForwardSimple(500, 200);
-         Port2_Output(0);// turn off the coloured LED
-         Motor_StopSimple(100);// Stop for 1000ms
-         Port2_Output(BLUE);// Change the coloured LED into yellow (turn right)
-         Motor_RightSimple(500, 200);// Make a left turn at 500 duty for 200ms
+         Motor_StopSimple(1000);
     }
         break;
         case 0xAD: // Bump 2
@@ -225,12 +220,7 @@ void checkbumpswitch(uint8_t status)
               Motor_StopSimple(100);  // Stop for 1000ms
     }
               else if (polling==1){
-               Port2_Output(WHITE);      // White is the colour to represent moving forward
-               Motor_ForwardSimple(500, 200);
-               Port2_Output(0);// turn off the coloured LED
-               Motor_StopSimple(100);// Stop for 1000ms
-               Port2_Output(BLUE);// Change the coloured LED into yellow (turn right)
-               Motor_RightSimple(500, 200);// Make a left turn at 500 duty for 200ms
+               Motor_StopSimple(1000);
     }
         break;
         case 0xCD: // Bump 3
@@ -252,12 +242,7 @@ void checkbumpswitch(uint8_t status)
               Motor_StopSimple(100);// Stop for 1000ms
     }
     else if (polling==1){
-               Port2_Output(WHITE);      // White is the colour to represent moving forward
-               Motor_ForwardSimple(500, 200);
-               Port2_Output(0);// turn off the coloured LED
-               Motor_StopSimple(100);// Stop for 1000ms
-               Port2_Output(BLUE);// Change the coloured LED into yellow (turn right)
-               Motor_RightSimple(500, 200);// Make a left turn at 500 duty for 200ms
+               Motor_StopSimple(1000);
     }
         break;
         case 0xE5: // Bump 4
@@ -279,12 +264,7 @@ void checkbumpswitch(uint8_t status)
               Motor_StopSimple(100);// Stop for 1000ms
     }
     else if (polling==1){
-               Port2_Output(WHITE);      // White is the colour to represent moving forward
-               Motor_ForwardSimple(500, 200);
-               Port2_Output(0);// turn off the coloured LED
-               Motor_StopSimple(100);// Stop for 1000ms
-               Port2_Output(BLUE);// Change the coloured LED into yellow (turn right)
-               Motor_RightSimple(500, 200);// Make a left turn at 500 duty for 200ms
+              Motor_StopSimple(1000);
     }
         break;
         case 0xE9: // Bump 5
@@ -306,12 +286,7 @@ void checkbumpswitch(uint8_t status)
               Motor_StopSimple(100);// Stop for 1000ms
     }
               else if (polling==1){
-               Port2_Output(WHITE);      // White is the colour to represent moving forward
-               Motor_ForwardSimple(500, 200);
-               Port2_Output(0);// turn off the coloured LED
-               Motor_StopSimple(100);// Stop for 1000ms
-               Port2_Output(BLUE);// Change the coloured LED into yellow (turn right)
-               Motor_RightSimple(500, 200);// Make a left turn at 500 duty for 200ms
+               Motor_StopSimple(1000);
     }
 
               break;
@@ -335,12 +310,7 @@ void checkbumpswitch(uint8_t status)
              Motor_StopSimple(100);// Stop for 1000ms
           }
           else if (polling==1){
-               Port2_Output(WHITE);      // White is the colour to represent moving forward
-               Motor_ForwardSimple(500, 200);
-               Port2_Output(0);// turn off the coloured LED
-               Motor_StopSimple(100);// Stop for 1000ms
-               Port2_Output(BLUE);// Change the coloured LED into yellow (turn right)
-               Motor_RightSimple(500, 200);// Make a left turn at 500 duty for 200ms
+               Motor_StopSimple(1000);
           }
 
         break;
@@ -407,13 +377,22 @@ int main(void){
   DisableInterrupts();
   while(1){
       if (SW1IN){
+            Port2_Output(WHITE);      // White is the colour to represent moving forward
+            Motor_ForwardSimple(500, 200);
+            Port2_Output(0);// turn off the coloured LED
+            Motor_StopSimple(100);// Stop for 1000ms
+            Port2_Output(BLUE);// Change the coloured LED into yellow (turn right)
+            Motor_RightSimple(500, 200);// Make a left turn at 500 duty for 200ms
             polling=1;
             status = Bump_Read_Input();
           if (status == 0x6D || status == 0xAD || status == 0xCD || status == 0xE5 || status == 0xE9 || status == 0xEC || status ==0xED) {
             checkbumpswitch(status);
+            
         }
       }
       else if (SW2IN){
+           Port2_Output(WHITE);      // White is the colour to represent moving forward
+           Motor_ForwardSimple(500, 200);
            polling=2;
            status = Bump_Read_Input();
           if (status == 0x6D || status == 0xAD || status == 0xCD || status == 0xE5 || status == 0xE9 || status == 0xEC || status ==0xED) {
