@@ -432,6 +432,12 @@ int main(void){
        Enableinterrupts();
        if (SW1IN){
          interrupt=1;
+         Port2_Output(WHITE);      // White is the colour to represent moving forward
+         Motor_ForwardSimple(500, 200);
+         Port2_Output(0);// turn off the coloured LED
+         Motor_StopSimple(100);// Stop for 1000ms
+         Port2_Output(BLUE);// Change the coloured LED into yellow (turn right)
+         Motor_RightSimple(500, 200);// Make a left turn at 500 duty for 200ms
        }
        else if(SW2IN){
          interrupt=2;
