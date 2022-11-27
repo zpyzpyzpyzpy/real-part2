@@ -527,11 +527,13 @@ void Switch_Init(void){
 while(1){
         if (SW1IN){
            Switch_Init();            // Initialise switches
+           SysTick_Wait10ms(10); // Wait here for every 100ms
            method=1;
            break;
         }
         else if (SW2IN){
-           Switch_Init();            // Initialise switches                  
+           Switch_Init();            // Initialise switches       
+           SysTick_Wait10ms(10); // Wait here for every 100ms
            method=2;
            break;
       }
