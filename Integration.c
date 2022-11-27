@@ -441,6 +441,8 @@ int main(void){
        }
        else if(SW2IN){
          interrupt=2;
+         Port2_Output(WHITE);      // White is the colour to represent moving forward
+         Motor_ForwardSimple(500, 200);
        }
      }
   }
