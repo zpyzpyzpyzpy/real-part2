@@ -197,7 +197,7 @@ void PORT4_IRQHandler(void){
 
             Motor_StopSimple(100);// Stop for 1000ms
 
-            Port2_Output(BLUE);// Change the coloured LED into yellow (turn right)
+            Port2_Output(BLUE);
 
             Motor_RightSimple(500, 300);// Make a left turn at 500 duty for 300ms
 
@@ -224,7 +224,7 @@ void PORT4_IRQHandler(void){
 
             Motor_StopSimple(100);// Stop for 1000ms
 
-            Port2_Output(BLUE);// Change the coloured LED into yellow (turn right)
+            Port2_Output(BLUE);
 
             Motor_RightSimple(500, 200);// Make a left turn at 500 duty for 200ms
 
@@ -251,7 +251,7 @@ void PORT4_IRQHandler(void){
 
              Motor_StopSimple(100);// Stop for 1000ms
 
-             Port2_Output(BLUE);// Change the coloured LED into yellow (turn right)
+             Port2_Output(BLUE);
 
              Motor_RightSimple(500, 100);// Make a left turn at 500 duty for 100ms
 
@@ -396,7 +396,7 @@ void checkbumpswitch(uint8_t status)
 
               Motor_StopSimple(100);// Stop for 1000ms
 
-              Port2_Output(BLUE);// Change the coloured LED into yellow (turn right)
+              Port2_Output(BLUE);
 
               Motor_RightSimple(500, 300);// Make a left turn at 500 duty for 300ms
 
@@ -424,7 +424,7 @@ void checkbumpswitch(uint8_t status)
 
               Motor_StopSimple(100);// Stop for 1000ms
 
-              Port2_Output(BLUE);// Change the coloured LED into yellow (turn right)
+              Port2_Output(BLUE);
 
               Motor_RightSimple(500, 200);// Make a left turn at 500 duty for 200ms
 
@@ -454,7 +454,7 @@ void checkbumpswitch(uint8_t status)
 
              Motor_StopSimple(100);// Stop for 1000ms
 
-             Port2_Output(BLUE);// Change the coloured LED into yellow (turn right)
+             Port2_Output(BLUE);
 
              Motor_RightSimple(500, 100);// Make a left turn at 500 duty for 100ms
 
