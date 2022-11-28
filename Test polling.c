@@ -375,8 +375,7 @@ int main(void){
   Motor_StopSimple(100);    // Stop the motor on initial state
   DisableInterrupts();
   while(1){
-      if (SW1IN){
-          while(1){
+      if (SW1IN==1){
             pattern=1;
             Port2_Output(WHITE);      // White is the colour to represent moving forward
             Motor_ForwardSimple(500, 200);
@@ -389,8 +388,7 @@ int main(void){
             checkbumpswitch(status);
           }
         }
-      else if (SW2IN){
-          while(1){
+      else if (SW2IN==1){
            pattern=2;
            Port2_Output(WHITE);      // White is the colour to represent moving forward
            Motor_ForwardSimple(500, 200);
@@ -398,7 +396,7 @@ int main(void){
           if (status == 0x6D || status == 0xAD || status == 0xCD || status == 0xE5 || status == 0xE9 || status == 0xEC || status ==0xED) {
             checkbumpswitch(status);
           }
-        }
+
        }
       }
 }
