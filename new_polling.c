@@ -111,17 +111,17 @@ void PORT4_IRQHandler(void){
             Port2_Output(GREEN);    // Change the coloured LED into green (backward)
 
             Motor_BackwardSimple(500, 200); // Move backward at 500 duty for 200ms
-            
+
             Port2_Output(0);    // turn off the coloured LED
-            
+
             Motor_StopSimple(100);  // Stop for 1000ms
-            
+
             Port2_Output(YELLOW); // Change the coloured LED into yellow (turn left)
-            
+
             Motor_LeftSimple(500, 100);// Make a left turn at 500 duty for 100ms
-            
+
             Port2_Output(0); // turn off the coloured LED
-            
+
             Motor_StopSimple(100);  // Stop for 1000ms
             break;
       }
@@ -137,15 +137,15 @@ void PORT4_IRQHandler(void){
             Motor_BackwardSimple(500, 200); // Move backward at 500 duty for 200ms
 
             Port2_Output(0);   // turn off the coloured LED
-            
+
             Motor_StopSimple(100);// Stop for 1000ms
-            
+
             Port2_Output(YELLOW); // Change the coloured LED into yellow (turn left)
-            
+
             Motor_LeftSimple(500, 200);// Make a left turn at 500 duty for 200ms
-            
+
             Port2_Output(0); // turn off the coloured LED
-            
+
             Motor_StopSimple(100);  // Stop for 1000ms
             break;
       }
@@ -159,17 +159,17 @@ void PORT4_IRQHandler(void){
             Port2_Output(GREEN);// Change the coloured LED into green (backward)
 
             Motor_BackwardSimple(500, 200); // Move backward at 500 duty for 200ms
-            
+
             Port2_Output(0);// turn off the coloured LED
-            
+
             Motor_StopSimple(100);// Stop for 1000ms
-            
+
             Port2_Output(YELLOW);// Change the coloured LED into yellow (turn left)
-            
+
             Motor_LeftSimple(500, 300);// Make a left turn at 500 duty for 300ms
-            
+
             Port2_Output(0);// turn off the coloured LED
-            
+
             Motor_StopSimple(100);// Stop for 1000ms
             break;
       }
@@ -183,17 +183,17 @@ void PORT4_IRQHandler(void){
             Port2_Output(GREEN);// Change the coloured LED into green (backward)
 
             Motor_BackwardSimple(500, 200); // Move backward at 500 duty for 200ms
-            
+
             Port2_Output(0);// turn off the coloured LED
-            
+
             Motor_StopSimple(100);// Stop for 1000ms
-            
+
             Port2_Output(BLUE);// Change the coloured LED into yellow (turn right)
-            
+
             Motor_RightSimple(500, 300);// Make a left turn at 500 duty for 300ms
-            
+
             Port2_Output(0);// turn off the coloured LED
-            
+
             Motor_StopSimple(100);// Stop for 1000ms
             break;
       }
@@ -207,17 +207,17 @@ void PORT4_IRQHandler(void){
             Port2_Output(GREEN);// Change the coloured LED into green (backward)
 
             Motor_BackwardSimple(500, 200); // Move backward at 500 duty for 200ms
-            
+
             Port2_Output(0);// turn off the coloured LED
-            
+
             Motor_StopSimple(100);// Stop for 1000ms
-            
+
             Port2_Output(BLUE);// Change the coloured LED into yellow (turn right)
-            
+
             Motor_RightSimple(500, 200);// Make a left turn at 500 duty for 200ms
-            
+
             Port2_Output(0);// turn off the coloured LED
-            
+
             Motor_StopSimple(100);// Stop for 1000ms
             break;
       }
@@ -237,9 +237,9 @@ void PORT4_IRQHandler(void){
              Motor_StopSimple(100);// Stop for 1000ms
 
              Port2_Output(BLUE);// Change the coloured LED into yellow (turn right)
-            
+
              Motor_RightSimple(500, 100);// Make a left turn at 500 duty for 100ms
-            
+
              Port2_Output(0);// turn off the coloured LED
 
              Motor_StopSimple(100);// Stop for 1000ms
@@ -272,11 +272,11 @@ void PORT4_IRQHandler(void){
 }
 
 // Function: checkbumpswitch(uint8_t status)
-// Description: this is an alternative way that you can use, 
+// Description: this is an alternative way that you can use,
 //              in which it uses polling method that comes from main function.
 //              However it is important to note that:
 //              1) the polling method is only useful for small program
-//              2) the input mask in switch case (for polling method) is DIFFERENT from the 
+//              2) the input mask in switch case (for polling method) is DIFFERENT from the
 //                 Nested Vectored Interrupt Controller (NVIC) which used in interrupt method.
 void checkbumpswitch(uint8_t status)
 {
@@ -304,9 +304,9 @@ void checkbumpswitch(uint8_t status)
             break;
     }
     else if (pattern==1){
-        while(1){
+
                 Motor_StopSimple(1000);
-               }
+
     }
 
         break;
@@ -331,10 +331,10 @@ void checkbumpswitch(uint8_t status)
               break;
     }
     else if (pattern==1){
-        while(1){
+
                 Motor_StopSimple(1000);
                }
-    }
+
 
         break;
       //case 0x08: // Bump switch 3 (for interrupt vector)
@@ -358,10 +358,10 @@ void checkbumpswitch(uint8_t status)
               break;
     }
     else if (pattern==1){
-        while(1){
+
                 Motor_StopSimple(1000);
                }
-    }
+
 
         break;
       //case 0x0C: // Bump switch 4 (for interrupt vector)
@@ -385,10 +385,10 @@ void checkbumpswitch(uint8_t status)
               break;
     }
     else if (pattern==1){
-        while(1){
+
                 Motor_StopSimple(1000);
                }
-    }
+
 
         break;
       //case 0x0E: // Bump switch 5 (for interrupt vector)
@@ -412,9 +412,9 @@ void checkbumpswitch(uint8_t status)
               break;
     }
     else if (pattern==1){
-           while(1){
+
                    Motor_StopSimple(1000);
-                  }
+
     }
 
         break;
@@ -441,9 +441,9 @@ void checkbumpswitch(uint8_t status)
              break;
           }
           else if (pattern==1){
-              while(1){
+
                       Motor_StopSimple(1000);
-                     }
+
           }
 
         break;
@@ -521,7 +521,7 @@ int main(void){
           Port2_Init();             // Initialise P2.2-P2.0 built-in LEDs
           Motor_InitSimple();       // Initialise DC Motor
           Motor_StopSimple(100);    // Stop the motor on initial state
-        break;
+        continue;
       }
       else if (SW2IN){
           pattern=2;
@@ -529,7 +529,7 @@ int main(void){
           Port2_Init();             // Initialise P2.2-P2.0 built-in LEDs
           Motor_InitSimple();       // Initialise DC Motor
           Motor_StopSimple(100);    // Stop the motor on initial state
-        break;
+        continue;
       }
     // This section is used for Example 1 (seciton 5.8.1)
     //__no_operation();     // the code will run without operation
@@ -537,17 +537,52 @@ int main(void){
           Port2_Output(WHITE);      // White is the colour to represent moving forward
           Motor_ForwardSimple(500, 1);
      }
-       
-     else if (pattern==1){
+
+    if (pattern==1){
         Port2_Output(WHITE);      // White is the colour to represent moving forward
-         Motor_ForwardSimple(500, 200);
+         Motor_ForwardSimple(500, 50);
+         status = Bump_Read_Input();
+         if (status == 0x6D || status == 0xAD || status == 0xCD || status == 0xE5 || status == 0xE9 || status == 0xEC ) {
+           checkbumpswitch(status);
+         }
+         Port2_Output(WHITE);
+         Motor_ForwardSimple(500, 50);
+         status = Bump_Read_Input();
+         if (status == 0x6D || status == 0xAD || status == 0xCD || status == 0xE5 || status == 0xE9 || status == 0xEC ) {
+           checkbumpswitch(status);
+         }
+         Port2_Output(WHITE);
+         Motor_ForwardSimple(500, 50);
+         status = Bump_Read_Input();
+         if (status == 0x6D || status == 0xAD || status == 0xCD || status == 0xE5 || status == 0xE9 || status == 0xEC ) {
+           checkbumpswitch(status);
+         }
+         Port2_Output(WHITE);
+         Motor_ForwardSimple(500, 50);
+         status = Bump_Read_Input();
+         if (status == 0x6D || status == 0xAD || status == 0xCD || status == 0xE5 || status == 0xE9 || status == 0xEC ) {
+           checkbumpswitch(status);
+         }
          Port2_Output(0);// turn off the coloured LED
-         Motor_StopSimple(100);// Stop for 1000ms
+         Motor_StopSimple(50);// Stop for 1000ms
+         status = Bump_Read_Input();
+         if (status == 0x6D || status == 0xAD || status == 0xCD || status == 0xE5 || status == 0xE9 || status == 0xEC ) {
+           checkbumpswitch(status);
+         }
+         Motor_StopSimple(50);// Stop for 1000ms
+         status = Bump_Read_Input();
+         if (status == 0x6D || status == 0xAD || status == 0xCD || status == 0xE5 || status == 0xE9 || status == 0xEC ) {
+           checkbumpswitch(status);
+         }
          Port2_Output(BLUE);// Change the coloured LED into yellow (turn right)
          Motor_RightSimple(500, 200);// Make a left turn at 500 duty for 200ms
+         status = Bump_Read_Input();
+         if (status == 0x6D || status == 0xAD || status == 0xCD || status == 0xE5 || status == 0xE9 || status == 0xEC ) {
+           checkbumpswitch(status);
+         }
      }
-        
-        
+
+
           status = Bump_Read_Input();
           if (status == 0x6D || status == 0xAD || status == 0xCD || status == 0xE5 || status == 0xE9 || status == 0xEC ) {
             checkbumpswitch(status);
