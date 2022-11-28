@@ -8,7 +8,7 @@
 #define SKYBLUE   0x06
 #define WHITE     0x07
 int polling=0;
-int interrupt=0;
+int inter=0;
 //----------------------------------------------------------------------------------------------------------------------------
 
 void BumpEdgeTrigger_Init(void){
@@ -33,7 +33,7 @@ void PORT4_IRQHandler(void){
     status = P4->IV;
     switch(status){
         case 0x02: // Bump switch 1
-            if (interrupt==2){
+            if (inter==2){
             Port2_Output(GREEN);    // Change the coloured LED into green (backward)
 
             Motor_BackwardSimple(500, 200); // Move backward at 500 duty for 200ms
@@ -50,12 +50,12 @@ void PORT4_IRQHandler(void){
 
             Motor_StopSimple(100);  // Stop for 1000ms
       }
-      else if (interrupt==1){
+      else if (inter==1){
           Motor_StopSimple(1000);
       }
           break;
         case 0x06: // Bump switch 2
-            if (interrupt==2){
+            if (inter==2){
             Port2_Output(GREEN); // Change the coloured LED into green (backward)
 
             Motor_BackwardSimple(500, 200); // Move backward at 500 duty for 200ms
@@ -72,12 +72,12 @@ void PORT4_IRQHandler(void){
 
             Motor_StopSimple(100);  // Stop for 1000ms
       }
-            else if (interrupt==1){
+            else if (inter==1){
             Motor_StopSimple(1000);
       }
           break;
         case 0x08: // Bump switch 3
-            if (interrupt==2){
+            if (inter==2){
             Port2_Output(GREEN);// Change the coloured LED into green (backward)
 
             Motor_BackwardSimple(500, 200); // Move backward at 500 duty for 200ms
@@ -94,12 +94,12 @@ void PORT4_IRQHandler(void){
 
             Motor_StopSimple(100);// Stop for 1000ms
       }
-            else if (interrupt==1){
+            else if (inter==1){
             Motor_StopSimple(1000);
       }
           break;
         case 0x0C: // Bump switch 4
-            if (interrupt==2){
+            if (inter==2){
             Port2_Output(GREEN);// Change the coloured LED into green (backward)
 
             Motor_BackwardSimple(500, 200); // Move backward at 500 duty for 200ms
@@ -116,12 +116,12 @@ void PORT4_IRQHandler(void){
 
             Motor_StopSimple(100);// Stop for 1000ms
       }
-            else if (interrupt==1){
+            else if (inter==1){
             Motor_StopSimple(1000);
       }
           break;
         case 0x0E: // Bump switch 5
-            if (interrupt==2){
+            if (inter==2){
             Port2_Output(GREEN);// Change the coloured LED into green (backward)
 
             Motor_BackwardSimple(500, 200); // Move backward at 500 duty for 200ms
@@ -138,12 +138,12 @@ void PORT4_IRQHandler(void){
 
             Motor_StopSimple(100);// Stop for 1000ms
       }
-            else if (interrupt==1){
+            else if (inter==1){
             Motor_StopSimple(1000);
       }
           break;
         case 0x10: // Bump switch 6
-            if (interrupt==2){
+            if (inter==2){
             Port2_Output(GREEN);// Change the coloured LED into green (backward)
 
              Motor_BackwardSimple(500, 200); // Move backward at 500 duty for 200ms
@@ -160,7 +160,7 @@ void PORT4_IRQHandler(void){
 
              Motor_StopSimple(100);// Stop for 1000ms
       }
-            else if (interrupt==1){
+            else if (inter==1){
             Motor_StopSimple(1000);
       }
           break;
@@ -375,12 +375,11 @@ int main(void){
   Motor_InitSimple();       // Initialise DC Motor
   Motor_StopSimple(100);    // Stop the motor on initial state
   DisableInterrupts();
-  while(1){
+
       if (SW1IN){
           while(1){
             Port2_Output(WHITE);      // White is the colour to represent moving forward
             Motor_ForwardSimple(500, 200);
-            Port2_Output(0);// turn off the coloured LED
             Motor_StopSimple(100);// Stop for 1000ms
             Port2_Output(BLUE);// Change the coloured LED into yellow (turn right)
             Motor_RightSimple(500, 200);// Make a left turn at 500 duty for 200ms
@@ -414,7 +413,7 @@ int main(void){
        Enableinterrupts();
        if (SW1IN){
            while(1){
-         interrupt=1;
+               inter=1;
          Port2_Output(WHITE);      // White is the colour to represent moving forward
          Motor_ForwardSimple(500, 200);
          Port2_Output(0);// turn off the coloured LED
@@ -425,11 +424,11 @@ int main(void){
        }
        else if(SW2IN){
            while(1){
-         interrupt=2;
+               inter=2;
          Port2_Output(WHITE);      // White is the colour to represent moving forward
          Motor_ForwardSimple(500, 200);
            }
        }
      }
-  }
+
 }
