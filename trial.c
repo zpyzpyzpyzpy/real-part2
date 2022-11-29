@@ -59,19 +59,17 @@
 #include "./inc/outputLED.h"
 // TODO: include the SysTick header file
 #include "./inc/SysTick.h"
-// TODO: bit-banded addresses positive logic of input switch S1
+// TODO: bit-banded addresses positive logic of input switch S1 and S2
 #define SW1IN ((*((volatile uint8_t *)(0x42098004)))^1)
 #define SW2IN ((*((volatile uint8_t *)(0x42098010)))^1)
-#define REDLED (*((volatile uint8_t *)(0x42098040)))    // output: red LED
 // TODO: bit-banded addresses positive logic of input switch S2
-
+#define REDLED (*((volatile uint8_t *)(0x42098040)))
 // TODO: declare a global variable to read bump switches value,
 //       name this as bumpSwitch_status and use uint8_t
 uint8_t bumpSwitch_status;
 
 // static void Switch_Init
 static void Switch_Init(void);
-
 // a static void function for a task called "taskMasterThread"
 static void taskMasterThread( void *pvParameters );
 // TODO: declare a static void function for a task called "taskBumpSwitch"
@@ -84,6 +82,7 @@ static void taskdcMotor(void *pvParameters);
 static void taskReadInputSwitch(void *pvParameters);
 // TODO: declare a static void function for a task called "taskdcMotor"
 static void taskDisplayOutputLED(void *pvParameters);
+
 /*
  * Called by main() to create the main program application
  */
@@ -301,64 +300,57 @@ static void taskReadInputSwitch( void *pvParameters ){
         ///////////////////////////////////////////////////////////
 
         if (i_SW1 == 1) {
-            REDLED = 1;     // turn on the red LED
-            // TODO: suspend the task taskHandle_PlaySong
-            vTaskSuspend(taskHandle_PlaySong);
+            //REDLED = 1;     // turn on the red LED
+            REDLED = 1;
 
+            // TODO: suspend the task taskHandle_PlaySong
+            vTaskSuspend (taskHandle_PlaySong);
         }
         else {
-            REDLED = 0;     // turn off the red LED
+            //REDLED = 0;     // turn off the red LED
+            REDLED = 0;
             // TODO: resume the task taskHandle_PlaySong
-            vTaskResume(taskHandle_PlaySong);
-
+            vTaskResume (taskHandle_PlaySong);
         }
 
     }
 }
 
 // TODO: create a static void function for taskPlaySong
-
+static void taskPlaySong( void *pvParameters ){
     // TODO: initialise the song
-
-    // TODO: play the song's function and run forever
-
-static void taskPlaySong(void *pvParameters)
-{
     init_song_pwm();
-        while(1)
-        {
-            play_song();
-        }
-}
+    // TODO: play the song's function and run forever
+    while(1){
+        play_song();
+     }
+    }
 // TODO: create a static void function for taskBumpSwitch
+static void taskBumpSwitch( void *pvParameters ){
     // TODO: initialise bump switches
-
+    BumpSwitch_Init();
     // TODO: Read the input of bump switches forever:
     //       Continuously read the 6 bump switches in a loop,
     //       and return it to the "bumpSwitch_status" variable.
     //       Note that the bumpSwitch_status is a global variable,
     //       so do not declare it again here locally.
-
-static void taskBumpSwitch(void *pvParameters)
-{
-      BumpSwitch_Init();
-      for( ;; ) // uncomment this
-      { // uncomment this
-          bumpSwitch_status=Bump_Read_Input() ;
-        // TODO: use bumpSwitch_status as the variable and
-        //       use Bump_Read_Input to read the input
-
-      } // uncomment this
-}
-// TODO: create a static void function for taskDisplayOutputLED
-static void taskDisplayOutputLED(void *pvParameters)
-{
     for( ;; ) // uncomment this
     { // uncomment this
-        outputLED_response(bumpSwitch_status);
+
+        // TODO: use bumpSwitch_status as the variable and
+        //       use Bump_Read_Input to read the input
+        bumpSwitch_status = Bump_Read_Input();
+
+    } // uncomment this
+}
+
+// TODO: create a static void function for taskDisplayOutputLED
+static void taskDisplayOutputLED( void *pvParameters ){
+    for( ;; ) // uncomment this
+    { // uncomment this
         // TODO: use outputLED_response as the function and
         //       use bumpSwitch_status as the parameter
-
+        outputLED_response(bumpSwitch_status);
     } // uncomment this
 }
 // a static void function for taskMasterThread
@@ -377,7 +369,7 @@ static void taskMasterThread( void *pvParameters )
     }
 
     // TODO: Turn off the RED LED, we no longer need that.
-        REDLED=0;
+    REDLED=0;
     //////////////////////////////////////////////////////////////////
     // TIP: to suspend a task, use vTaskSuspend in FreeRTOS
     // URL: https://www.freertos.org/a00130.html
@@ -387,28 +379,23 @@ static void taskMasterThread( void *pvParameters )
     // TIP: to delete a task, use vTaskDelete in FreeRTOS
     // URL: https://www.freertos.org/a00126.html
     //////////////////////////////////////////////////////////////////
-        vTaskSuspend(taskHandle_BlinkRedLED);
-}
+
     // TODO: This function (taskMasterThread)is no longer needed.
     //       Please suspend this task itself, or maybe just delete it.
     //       Question: what are the difference between 'suspend' the task,
     //                 or 'delete' the task?
-
-
+    vTaskSuspend (taskHandle_BlinkRedLED);
+}
 
 // TODO: create a static void function for taskdcMotor
-
+static void taskdcMotor( void *pvParameters ){
     // TODO: initialise the DC Motor
-
+    dcMotor_Init();
     // TODO: use a polling that continuously read from the bumpSwitch_status,
     //       and run this forever in a while loop.
     //       use dcMotor_response and bumpSwitch_status for the parameter
-static void taskdcMotor( void *pvParameters )
-{
-    dcMotor_Init();
-            while(1)
-            {
-                dcMotor_response(bumpSwitch_status);
-            }
+    while(1){
+        bumpSwitch_status = Bump_read_Input();
+        dcMotor_response(bumpSwitch_status);
+    }
 }
-
