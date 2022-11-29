@@ -65,7 +65,7 @@
 #define SW2IN ((*((volatile uint8_t *)(0x42098010)))^1)
 // TODO: declare a global variable to read bump switches value,
 //       name this as bumpSwitch_status and use uint8_t
- uint8_t Bump_Read_Input(void);
+uint8_t bumpSwitch_status;
 // static void Switch_Init
 static void Switch_Init(void);
 
@@ -112,9 +112,9 @@ void main_program( void )
     prvConfigureClocks();
 
     // TODO: initialise the switch
-    prvConfigureswitch();
+    Switch_Init();
     // TODO: initialise systick timer
-    prvConfiguresysticktimer();
+    SysTick_Init();
     //////////////////////////////////////////////////////
     // TIP: to create a task, use xTaskCreate in FreeRTOS
     // URL : https://www.freertos.org/a00125.html
@@ -167,7 +167,7 @@ xTaskCreate(
         128,
         NULL,
         1,
-        taskHandle_dcMotor);
+        &taskHandle_dcMotor);
         // TODO: Create a task that has these parameters=
         //       pvTaskCode: taskdcMotor
         //       pcName: taskM
@@ -195,7 +195,7 @@ xTaskCreate(
         128,
         NULL,
         1,
-        taskHandle_OutputLED);
+        &taskHandle_OutputLED);
         // TODO: Create a task that has these parameters=
         //       pvTaskCode: taskDisplayOutputLED
         //       pcName: taskD
@@ -210,7 +210,7 @@ xTaskCreate(
         //////////////////////////////////////////////////////////////////
 
         // TODO: start the scheduler
-
+        vTaskStartScheduler();
 
     /* INFO: If everything is fine, the scheduler will now be running,
     and the following line will never be reached.  If the following line
@@ -319,7 +319,7 @@ static void taskPlaySong(void *pvParameters)
     // TODO: initialise the song
     init_song_pwm();
     // TODO: play the song's function and run forever
-    for( ;; )
+    while(1)
     {
         play_song();
     }
@@ -336,7 +336,7 @@ static void taskBumpSwitch(void *pvParameters)
     //       so do not declare it again here locally.
     for( ;; )
     {
-        unsigned char bumpSwitch_status;
+
         bumpSwitch_status=Bump_Read_Input();
 
         // TODO: use bumpSwitch_status as the variable and
@@ -350,8 +350,8 @@ static void taskDisplayOutputLED( void *pvParameters)
 {
     for( ;; )
     {
-        unsigned char bumpSwitch_status;
-        bumpSwitch_status=Bump_Read_Input();
+
+
         outputLED_response(bumpSwitch_status);
         // TODO: use outputLED_response as the function and
         //       use bumpSwitch_status as the parameter
@@ -370,7 +370,7 @@ static void taskMasterThread( void *pvParameters )
 
     while(!SW2IN){                  // Wait for SW2 switch
         for (i=0; i<1000000; i++);  // Wait here waiting for command
-        //REDLED = !REDLED;           // The red LED is blinking
+        REDLED = !REDLED;           // The red LED is blinking
     }
 
     // TODO: Turn off the RED LED, we no longer need that.
@@ -384,7 +384,7 @@ static void taskMasterThread( void *pvParameters )
     // TIP: to delete a task, use vTaskDelete in FreeRTOS
     // URL: https://www.freertos.org/a00126.html
     //////////////////////////////////////////////////////////////////
-    vTaskDelete(taskMasterThread);
+    vTaskDelete(taskHandle_BlinkRedLED);
     // TODO: This function (taskMasterThread)is no longer needed.
     //       Please suspend this task itself, or maybe just delete it.
     //       Question: what are the difference between 'suspend' the task,
@@ -400,8 +400,6 @@ static void taskdcMotor(void *pvParameters )
     //       and run this forever in a while loop.
     //       use dcMotor_response and bumpSwitch_status for the parameter
     while(1){
-        unsigned char bumpSwitch_status;
-        bumpSwitch_status=Bump_Read_Input();
-        outputLED_response(bumpSwitch_status);
+        dcMotor_response(bumpSwitch_status);
     }
 }
