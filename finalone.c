@@ -311,7 +311,7 @@ static void taskReadInputSwitch( void *pvParameters ){
                 vTaskPrioritySet( taskHandle_PlaySong,3);
                 vTaskPrioritySet( taskHandle_InputSwitch,3);
                 vTaskPrioritySet(taskHandle_dcMotor,1);
-                Port2_Output2(BLUE);
+
                 delay_ms(5000);
                 i_SW2=0;
                 for (i=0; i<1000000; i++);
@@ -331,7 +331,7 @@ static void taskReadInputSwitch( void *pvParameters ){
             // TODO: resume the task taskHandle_PlaySong
             vTaskResume(taskHandle_PlaySong);
 
-            Port2_Output2(GREEN);
+
         }
 
     }
